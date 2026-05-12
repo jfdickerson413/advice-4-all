@@ -166,6 +166,28 @@
       color: #000000;
       font-weight: normal;
     }
+    
+    .archive-box {
+  text-align: left;
+}
+
+.archive-item {
+  margin: 8px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.archive-item a {
+  color: #0000ee;
+  text-decoration: underline;
+}
+
+.archive-flag {
+  width: 28px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 8px;
+}
 
     /* Make the site remain badly old, but not totally broken on phones. */
     @media (max-width: 1000px) {
@@ -325,30 +347,59 @@
     width: 86%;
   }
 }
- 
- .fact-item {
-  display: inline-block;
-  margin: 4px 0;
-  font-size: 21px;
+
+.magic-box {
+  width: 610px;
+  margin: 34px auto 0 auto;
+  text-align: center;
   font-weight: bold;
-  line-height: 1.2;
 }
 
-.archive-flag {
-  width: 24px;
+.magic-box h2 {
+  font-size: 25px;
+  margin: 0 0 8px 0;
+}
+
+.magic-instruction {
+  font-size: 18px;
+  line-height: 1.15;
+  margin: 0 0 12px 0;
+}
+
+.magic-ball {
+  width: 150px;
   height: auto;
-  vertical-align: middle;
-  margin-right: 8px;
+  border: 0;
+  margin: 8px 0 14px 0;
+  cursor: pointer;
+}
+
+.magic-button {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 16px;
+  font-weight: bold;
+  background: #d6d6d6;
+  color: #000000;
+  border: 3px outset #cccccc;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.magic-button:active {
+  border: 3px inset #cccccc;
 }
 
 @media only screen and (max-width: 620px) {
-  .archive-flag {
-    width: 18px;
-    margin-right: 6px;
+  .magic-box {
+    width: 88%;
   }
 
-  .fact-item {
-    font-size: 18px;
+  .magic-ball {
+    width: 120px;
+  }
+
+  .magic-button {
+    font-size: 14px;
   }
 }
     
@@ -383,99 +434,52 @@
     </div>
 
     <div class="nav">
-    - <a href="index.html">HOME</a>
-   - <a href="archive.html">ENTER WISDOM</a> -
+      - <a href="index.html">HOME</a>
+      - <a href="archive.html">ENTER WISDOM</a> -
       <a href="services">SERVICES</a> -
       <a href="facts.html">FACTS</a> -
       <a href="email.html">EMAIL</a> -
     </div>
-
-    <div class="portrait-row">
+    
+       <div class="portrait-row">
       <div class="portrait-cell">
         <a href="index.html"><img class="portrait" src="images/wisdom-man-junior.png" alt="Wisdom Man Junior"></a>
       </div>
       <div class="hello-cell">
-       EMAIL<br>
-       The WORLD at your FINGER TIPS
+        100% Free Magic 8 Ball<br>
+        For Guiding On the Path
       </div>
     </div>
-    
-        <h3><a href="8ball.html">Get Instant Guidance Here!</a></h3>
-    
-<main class="advice-box">
-  <h2>EMAIL</h2>
 
-  <p>
-    Email is a useful communication tool by the internet. It allows one person to send message to another person without envelope and stamp.
+<div class="magic-box">
+  <h1>FREE ONLINE MAGIC 8 BALL</h1>
+  <h2>Answers for LIFE</h2>
+
+  <p class="magic-instruction">
+    Ask a question <i>in mind</i>. Receive circular guidance.
   </p>
 
-  <p>
-    You may email Wisdom Man Junior for many reasons. Some reasons are serious. Some reasons are planning. Some reasons are because life has become difficult and requires written answer.
-  </p>
+  <img
+    id="magicBallImage"
+    class="magic-ball"
+    src="images/8ball-default.png"
+    alt="Wisdom Ball"
+    onclick="shakeWisdomBall()"
+  >
 
-  <h3>REASONS YOU COULD EMAIL ME:</h3>
+  <br>
 
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Need advice
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Want a plan
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Need maps of any place. PDF available.
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Cooking techniques
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Travel plans
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-    Coordination
-  </span><br>
-
-  <span class="fact-item">
-    <img class="archive-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
-     Enter Text Here
-  </span><br>
-
-<img class="laptop" src="images/laptop.gif" alt="laptop">
-
-  <p>
-    Email is useful because it can travel through "waves" and arrive to inbox on mobile device and desktop computers. This has changed modern world in many ways, including business, friendship, notification, receipt, school, romance, shipping confirmation, and complaint.
-  </p>
-
-  <p>
-    If you want more information on the ways email has changed the modern world,
-    <a href="emailfacts.html">click here</a>.
-  </p>
-
-  <p>
-    To email Wisdom Man Junior, send message with your question, problem, idea, event, journey, or recipe. Please do not send emergency. Emergency should be handled by correct emergency person.
-  </p>
-</main>
-
-<div class="archive-link">
-  <a href="index.html">BACK HOME</a>
+  <button class="magic-button" onclick="shakeWisdomBall()">
+    GUIDANCE? CLICK HERE
+  </button>
 </div>
 
-<div class="archive-link">
-  <a href="index.html">BACK HOME</a>
-</div>
+   <div class="archive-link">
+      <a href="magicinfo.html">CLICK FOR MORE INFO ON MAGIC  HERE</a>
+    </div>
 
     <div class="archive-link">
-      <a href="archive.html">ENTER COMPLETE WISDOM ADVICE ARCHIVE</a>
+      <a href="index.html">BACK HOME</a>
     </div>
 
     <div class="footer">
@@ -483,5 +487,32 @@
       <div class="tiny-note">Best viewed with Internet Explorer 6.0 or emotionally similar browser.</div>
     </div>
   </div>
+  
+  <script>
+  function shakeWisdomBall() {
+    var answers = [
+      "images/8ball-answer-01.png",
+      "images/8ball-answer-02.png",
+      "images/8ball-answer-03.png",
+      "images/8ball-answer-04.png",
+      "images/8ball-answer-05.png",
+      "images/8ball-answer-06.png",
+      "images/8ball-answer-07.png",
+      "images/8ball-answer-08.png",
+      "images/8ball-answer-09.png",
+      "images/8ball-answer-10.png",
+      "images/8ball-answer-11.png",
+      "images/8ball-answer-12.png",
+      "images/8ball-answer-13.png",
+      "images/8ball-answer-14.png"
+    ];
+
+    var randomNumber = Math.floor(Math.random() * answers.length);
+    var image = document.getElementById("magicBallImage");
+
+    image.src = answers[randomNumber];
+  }
+</script>
+  
 </body>
 </html>
