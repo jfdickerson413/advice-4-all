@@ -485,17 +485,25 @@
     </div>
   </div>
 
-  <script>
-    function translateBeta() {
-      var output = document.getElementById("outputText");
-      output.value = "Hamburguesa Por Favor";
-    }
+<script>
+  function translateBeta() {
+    var output = document.getElementById("outputText");
 
-    function playHamburguesa() {
-      var audio = document.getElementById("hamburguesaAudio");
-      audio.currentTime = 0;
-      audio.play();
-    }
-  </script>
+    var translations = [
+      "Hamburguea Por Favor",
+      "Hamburguea por favor",
+      "hamburguea por favor"
+    ];
+
+    var randomNumber = Math.floor(Math.random() * translations.length);
+    output.value = translations[randomNumber];
+  }
+
+  function playHamburguesa() {
+    var audio = document.getElementById("hamburguesaAudio");
+    audio.currentTime = 0;
+    audio.play();
+  }
+</script>
 </body>
 </html>
