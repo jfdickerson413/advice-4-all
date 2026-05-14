@@ -169,7 +169,7 @@
       position: relative;
     }
 
-    .puzzle-slot.correct {
+    .puzzle-slot.filled {
       border: 1px solid #000000;
       background: #ffffff;
     }
@@ -215,7 +215,7 @@
       margin: 0;
       border: 0;
       display: block;
-      cursor: default;
+      cursor: grab;
       position: static;
       z-index: 1;
     }
@@ -498,21 +498,21 @@
         <h2>FLAG PUZZLE</h2>
 
         <div class="puzzle-instruction">
-          Assemble flag for entering correct verification.
+          Assemble official flag for entering correct verification.
         </div>
 
         <div class="puzzle-board">
-          <div class="puzzle-slot" data-slot="1"></div>
-          <div class="puzzle-slot" data-slot="2"></div>
-          <div class="puzzle-slot" data-slot="3"></div>
-          <div class="puzzle-slot" data-slot="4"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
         </div>
 
         <div class="puzzle-pieces">
-          <img class="puzzle-piece" src="images/flag-puzzle-3.png" data-piece="3" alt="">
-          <img class="puzzle-piece" src="images/flag-puzzle-1.png" data-piece="1" alt="">
-          <img class="puzzle-piece" src="images/flag-puzzle-4.png" data-piece="4" alt="">
-          <img class="puzzle-piece" src="images/flag-puzzle-2.png" data-piece="2" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-3.png" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-1.png" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-4.png" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-2.png" alt="">
         </div>
 
         <div class="puzzle-message">Flag is not yet solved.</div>
@@ -522,21 +522,21 @@
         <h2>ME PUZZLE</h2>
 
         <div class="puzzle-instruction">
-          Put me back together for human confirmation.
+          Put Wisdom Man Junior back together for human confirmation.
         </div>
 
         <div class="puzzle-board">
-          <div class="puzzle-slot" data-slot="1"></div>
-          <div class="puzzle-slot" data-slot="2"></div>
-          <div class="puzzle-slot" data-slot="3"></div>
-          <div class="puzzle-slot" data-slot="4"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
+          <div class="puzzle-slot"></div>
         </div>
 
         <div class="puzzle-pieces">
-          <img class="puzzle-piece" src="images/portrait-puzzle-2.png" data-piece="2" alt="">
-          <img class="puzzle-piece" src="images/portrait-puzzle-4.png" data-piece="4" alt="">
-          <img class="puzzle-piece" src="images/portrait-puzzle-1.png" data-piece="1" alt="">
-          <img class="puzzle-piece" src="images/portrait-puzzle-3.png" data-piece="3" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-2.png" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-4.png" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-1.png" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-3.png" alt="">
         </div>
 
         <div class="puzzle-message">Man is not yet complete.</div>
@@ -559,8 +559,6 @@
     var startNextSibling = null;
     var offsetX = 0;
     var offsetY = 0;
-    var originalLeft = 0;
-    var originalTop = 0;
 
     function initPuzzles() {
       var pieces = document.querySelectorAll(".puzzle-piece");
@@ -571,37 +569,32 @@
     }
 
     function startDrag(event) {
-      var piece = event.currentTarget;
-
-      if (piece.classList.contains("placed")) {
-        return;
-      }
-
       event.preventDefault();
+
+      var piece = event.currentTarget;
 
       activePiece = piece;
       startParent = piece.parentNode;
       startNextSibling = piece.nextSibling;
+
+      if (startParent.classList.contains("puzzle-slot")) {
+        startParent.classList.remove("filled");
+      }
 
       var rect = piece.getBoundingClientRect();
 
       offsetX = event.clientX - rect.left;
       offsetY = event.clientY - rect.top;
 
-      originalLeft = rect.left;
-      originalTop = rect.top;
-
+      piece.classList.remove("placed");
       piece.classList.add("dragging");
+
       piece.style.left = rect.left + "px";
       piece.style.top = rect.top + "px";
       piece.style.width = rect.width + "px";
       piece.style.height = rect.height + "px";
 
       document.body.appendChild(piece);
-
-      try {
-        piece.setPointerCapture(event.pointerId);
-      } catch (e) {}
 
       document.addEventListener("pointermove", moveDrag);
       document.addEventListener("pointerup", endDrag);
@@ -622,18 +615,11 @@
       }
 
       var piece = activePiece;
-      var puzzle = piece.closest(".puzzle-area");
+      var puzzleType = getPuzzleType(piece);
 
-      var piecePuzzleType = null;
-      if (puzzle) {
-        piecePuzzleType = puzzle.getAttribute("data-puzzle");
-      }
+      var targetSlot = findEmptySlotUnderPoint(event.clientX, event.clientY, puzzleType);
 
-      var clientX = event.clientX;
-      var clientY = event.clientY;
-      var targetSlot = findSlotUnderPoint(clientX, clientY, piecePuzzleType);
-
-      if (targetSlot && targetSlot.getAttribute("data-slot") === piece.getAttribute("data-piece") && targetSlot.children.length === 0) {
+      if (targetSlot) {
         placePieceInSlot(piece, targetSlot);
         checkPuzzleComplete(targetSlot.closest(".puzzle-area"));
       } else {
@@ -645,7 +631,20 @@
       document.removeEventListener("pointerup", endDrag);
     }
 
-    function findSlotUnderPoint(x, y, puzzleType) {
+    function getPuzzleType(piece) {
+      var parent = startParent;
+
+      if (parent && parent.closest) {
+        var area = parent.closest(".puzzle-area");
+        if (area) {
+          return area.getAttribute("data-puzzle");
+        }
+      }
+
+      return "";
+    }
+
+    function findEmptySlotUnderPoint(x, y, puzzleType) {
       var slots = document.querySelectorAll('.puzzle-area[data-puzzle="' + puzzleType + '"] .puzzle-slot');
 
       for (var i = 0; i < slots.length; i++) {
@@ -655,7 +654,8 @@
           x >= rect.left &&
           x <= rect.right &&
           y >= rect.top &&
-          y <= rect.bottom
+          y <= rect.bottom &&
+          slots[i].children.length === 0
         ) {
           return slots[i];
         }
@@ -674,7 +674,7 @@
       piece.style.height = "";
 
       slot.appendChild(piece);
-      slot.classList.add("correct");
+      slot.classList.add("filled");
     }
 
     function returnPiece(piece) {
@@ -689,6 +689,10 @@
         startParent.insertBefore(piece, startNextSibling);
       } else {
         startParent.appendChild(piece);
+      }
+
+      if (startParent.classList.contains("puzzle-slot") && startParent.children.length > 0) {
+        startParent.classList.add("filled");
       }
     }
 
@@ -706,13 +710,19 @@
         }
       }
 
-      if (complete) {
-        var message = puzzleArea.querySelector(".puzzle-message");
+      var message = puzzleArea.querySelector(".puzzle-message");
 
+      if (complete) {
         if (puzzleArea.getAttribute("data-puzzle") === "flag") {
-          message.innerHTML = "FLAG PUZZLE COMPLETE. Visitor has national ability.";
+          message.innerHTML = "FLAG PUZZLE COMPLETE. Visitor is accepted.";
         } else {
-          message.innerHTML = "ME PUZZLE COMPLETE. Wisdom Man Junior has returned.";
+          message.innerHTML = "ME PUZZLE COMPLETE. Person is assembled enough.";
+        }
+      } else {
+        if (puzzleArea.getAttribute("data-puzzle") === "flag") {
+          message.innerHTML = "Flag is not yet solved.";
+        } else {
+          message.innerHTML = "Man is not yet complete.";
         }
       }
     }
