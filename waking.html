@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WISDOM MAN JUNIOR - Advisor of Life Matters</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="shortcut icon" href="images/favicon.png">
+  <style>
+    /*
+      WISDOM MAN JUNIOR
+      Homepage v0.1
+      Built for Neocities / old-web spirit.
+
+      Suggested folder setup:
+      index.html
+      images/wisdom-man-junior.png
+      images/wisdom-flag.png
+    */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #000000;
+      font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+    body {
+      text-align: center;
+    }
+
+    .page {
+      width: 980px;
+      margin: 18px auto 40px auto;
+      text-align: center;
+    }
+
+    .site-title {
+      font-size: 74px;
+      line-height: 0.88;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      color: #a87700;
+      font-size: 35px;
+      line-height: 1;
+      margin: 0 0 4px 0;
+      padding: 0;
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    .flags {
+      margin: 3px 0 18px 0;
+      height: 28px;
+    }
+
+    .flags img {
+      width: 48px;
+      height: auto;
+      margin: 0 24px;
+      vertical-align: middle;
+    }
+
+    .nav {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: bold;
+    }
+
+    .nav a:link,
+    .nav a:visited {
+      color: #0000ee;
+      text-decoration: underline;
+    }
+
+    .nav a:hover {
+      color: #ff0000;
+      background: #ffff00;
+    }
+
+    .portrait-row {
+      width: 430px;
+      margin: 6px auto 45px auto;
+      display: table;
+    }
+
+    .portrait-cell,
+    .hello-cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .portrait-cell {
+      width: 210px;
+      text-align: right;
+    }
+
+    .hello-cell {
+      width: 180px;
+      text-align: left;
+      padding-left: 18px;
+      font-size: 15px;
+      line-height: 1.08;
+      font-weight: bold;
+    }
+
+    .portrait {
+      width: 150px;
+      height: auto;
+      filter: grayscale(100%) contrast(145%) brightness(118%);
+      opacity: 0.9;
+    }
+
+    .advice-box {
+      width: 610px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 21px;
+      line-height: 1.18;
+      font-weight: bold;
+    }
+
+    .advice-box h2 {
+      font-size: 25px;
+      line-height: 1;
+      margin: 0 0 2px 0;
+      padding: 0;
+    }
+
+    .advice-box p {
+      margin: 0 0 24px 0;
+    }
+
+    .label {
+      display: block;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .archive-link {
+      width: 610px;
+      margin: 34px auto 0 auto;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin: 70px 0 0 0;
+      font-size: 13px;
+      font-weight: bold;
+      color: #7b3f00;
+    }
+
+    .tiny-note {
+      margin-top: 9px;
+      font-size: 11px;
+      color: #000000;
+      font-weight: normal;
+    }
+
+    /* Make the site remain badly old, but not totally broken on phones. */
+    @media (max-width: 1000px) {
+      .page {
+        width: 94%;
+      }
+
+      .site-title {
+        font-size: 52px;
+      }
+
+      .tagline {
+        font-size: 27px;
+      }
+
+      .advice-box,
+      .archive-link {
+        width: 88%;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .site-title {
+        font-size: 42px;
+      }
+
+      .tagline {
+        font-size: 22px;
+      }
+
+      .flags img {
+        width: 40px;
+        margin: 0 10px;
+      }
+
+      .nav {
+        font-size: 18px;
+      }
+
+      .portrait-row {
+        width: 95%;
+      }
+
+      .portrait-cell {
+        width: 48%;
+      }
+
+      .hello-cell {
+        font-size: 13px;
+      }
+
+      .portrait {
+        width: 135px;
+      }
+
+      .advice-box {
+        font-size: 18px;
+      }
+    }
+    
+    .globe-column {
+  position: fixed;
+  top: 18px;
+  width: 88px;
+  text-align: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.globe-left {
+  left: 28px;
+}
+
+.globe-right {
+  right: 28px;
+}
+
+.globe-column img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px auto;
+  image-rendering: auto;
+}
+
+/* Keep main page above globe decorations */
+.page {
+  position: relative;
+  z-index: 2;
+}
+
+/* Medium screens: shrink and push outward */
+@media only screen and (max-width: 1200px) {
+  .globe-column {
+    width: 54px;
+  }
+
+  .globe-left {
+    left: 4px;
+  }
+
+  .globe-right {
+    right: 4px;
+  }
+
+  .globe-column img {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 18px;
+  }
+}
+
+/* Mobile: make the globes tiny side ornaments */
+@media only screen and (max-width: 760px) {
+  .globe-column {
+    position: absolute;
+    top: 105px;
+    width: 32px;
+  }
+
+  .globe-left {
+    left: 2px;
+  }
+
+  .globe-right {
+    right: 2px;
+  }
+
+  .globe-column img {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 34px;
+  }
+
+  .page {
+    width: 84%;
+  }
+}
+
+/* Very small phones: use only one globe per side so it does not crowd */
+@media only screen and (max-width: 430px) {
+  .globe-column img {
+    display: none;
+  }
+
+  .globe-column img:first-child,
+  .globe-column img:nth-child(2),
+  .globe-column img:nth-child(3) {
+    display: block;
+  }
+
+  .globe-column {
+    top: 125px;
+  }
+
+  .page {
+    width: 86%;
+  }
+}
+
+.qa-label {
+  display: inline-block;
+  margin: 8px 0 2px 0;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.qa-label .label-flag {
+  width: 22px;
+  height: auto;
+  vertical-align: middle;
+  margin: 0 6px;
+}
+
+@media only screen and (max-width: 620px) {
+  .qa-label {
+    font-size: 18px;
+  }
+
+  .qa-label .label-flag {
+    width: 17px;
+    margin: 0 4px;
+  }
+}
+    
+  </style>
+</head>
+<body>
+<div class="globe-column globe-left" aria-hidden="true">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+</div>
+
+<div class="globe-column globe-right" aria-hidden="true">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+  <img src="images/globe-revolution.gif" alt="">
+</div>
+  <div class="page">
+    <h1 class="site-title">WISDOM MAN JUNIOR</h1>
+    <div class="tagline">&quot;Advisor of Life Matters&quot;</div>
+
+    <div class="flags">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+    </div>
+
+    <div class="nav">
+    - <a href="index.html">HOME</a>
+      - <a href="archive.html">ENTER WISDOM</a> -
+      <a href="services">SERVICES</a> -
+      <a href="facts.html">FACTS</a> -
+      <a href="email.html">EMAIL</a> -
+    </div>
+
+    <div class="portrait-row">
+      <div class="portrait-cell">
+        <a href="index.html"><img class="portrait" src="images/wisdom-man-junior.png" alt="Wisdom Man Junior"></a>
+      </div>
+      <div class="hello-cell">
+        &quot;Hello&quot;<br>
+        Friend! Avice Below!
+      </div>
+    </div>
+
+    <h3><a href="8ball.html">Get Instant Guidance Here!</a></h3>
+
+    <main class="advice-box">
+      <h2>ON "WAKING UP"</h2>
+<span class="qa-label">
+  <img class="label-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
+  Question:
+  <img class="label-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
+</span>
+
+<p>&ldquo;How do I wake up earlier?&rdquo;</p>
+
+<span class="qa-label">
+  <img class="label-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
+  Answer:
+  <img class="label-flag" src="images/wisdom-flag.png" alt="Wisdom flag">
+</span>
+
+<p>You can crack open as a fortune and open the world of the oyster. You are aware of the sun and the clouds can reveal and also conceal. Crashing waves along the shoreline cannot help it.</p> 
+<p>When you wake up and you awake, you find the morning as a tree with 500 coconuts. If you were stranded on an island, a coconut may be your best friend.</p>
+<p>Ask yourself “Can I do that?” and when the answer comes back, you may find it is “yes”. </p>
+     
+
+    </main>
+
+    <div class="archive-link">
+      <a href="archive.html">ENTER COMPLETE WISDOM ADVICE ARCHIVE</a>
+    </div>
+
+    <div class="footer">
+      2004&copy;WISDOMMANJUNIOR
+      <div class="tiny-note">Best viewed with Internet Explorer 6.0 or emotionally similar browser.</div>
+    </div>
+  </div>
+</body>
+</html>
