@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUZZLES - WISDOM MAN JUNIOR</title>
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="shortcut icon" href="images/favicon.png">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #000000;
+      font-family: Georgia, "Times New Roman", Times, serif;
+    }
+
+    body {
+      text-align: center;
+    }
+
+    .page {
+      width: 980px;
+      margin: 18px auto 40px auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .site-title {
+      font-size: 74px;
+      line-height: 0.88;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      color: #a87700;
+      font-size: 35px;
+      line-height: 1;
+      margin: 0 0 4px 0;
+      padding: 0;
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    .flags {
+      margin: 3px 0 18px 0;
+      height: 28px;
+    }
+
+    .flags img {
+      width: 48px;
+      height: auto;
+      margin: 0 24px;
+      vertical-align: middle;
+    }
+
+    .nav {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: bold;
+    }
+
+    .nav a:link,
+    .nav a:visited {
+      color: #0000ee;
+      text-decoration: underline;
+    }
+
+    .nav a:hover {
+      color: #ff0000;
+      background: #ffff00;
+    }
+
+    .portrait-row {
+      width: 430px;
+      margin: 6px auto 34px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-cell {
+      width: auto;
+      text-align: right;
+    }
+
+    .hello-cell {
+      width: auto;
+      text-align: left;
+      padding-left: 18px;
+      font-size: 15px;
+      line-height: 1.08;
+      font-weight: bold;
+    }
+
+    .portrait {
+      width: 150px;
+      height: auto;
+      filter: grayscale(100%) contrast(145%) brightness(118%);
+      opacity: 0.9;
+    }
+
+    .intro-text {
+      width: 610px;
+      margin: 0 auto 24px auto;
+      text-align: left;
+      font-size: 21px;
+      line-height: 1.18;
+      font-weight: bold;
+    }
+
+    .puzzle-area {
+      margin: 42px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .puzzle-area h2 {
+      font-size: 26px;
+      margin: 0 0 8px 0;
+      padding: 0;
+    }
+
+    .puzzle-instruction {
+      width: 520px;
+      margin: 0 auto 14px auto;
+      font-size: 16px;
+      line-height: 1.15;
+    }
+
+    .flag-puzzle {
+      --piece-width: 280px;
+      --piece-height: 200px;
+      width: 620px;
+    }
+
+    .me-puzzle {
+      --piece-width: 200px;
+      --piece-height: 200px;
+      width: 460px;
+    }
+
+    .puzzle-board {
+      display: grid;
+      grid-template-columns: var(--piece-width) var(--piece-width);
+      grid-template-rows: var(--piece-height) var(--piece-height);
+      width: calc(var(--piece-width) * 2);
+      height: calc(var(--piece-height) * 2);
+      margin: 0 auto 18px auto;
+      border: 4px inset #cccccc;
+      background: #eeeeee;
+      box-sizing: content-box;
+    }
+
+    .puzzle-slot {
+      width: var(--piece-width);
+      height: var(--piece-height);
+      box-sizing: border-box;
+      border: 1px dashed #777777;
+      background: #f7f7f7;
+      position: relative;
+    }
+
+    .puzzle-slot.correct {
+      border: 1px solid #000000;
+      background: #ffffff;
+    }
+
+    .puzzle-pieces {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      min-height: calc(var(--piece-height) + 24px);
+    }
+
+    .puzzle-piece {
+      width: var(--piece-width);
+      height: var(--piece-height);
+      margin: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      border: 3px outset #cccccc;
+      background: transparent;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      position: relative;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .puzzle-piece:active {
+      cursor: grabbing;
+    }
+
+    .puzzle-piece.dragging {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.92;
+      border: 3px solid #ff0000;
+    }
+
+    .puzzle-piece.placed {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border: 0;
+      display: block;
+      cursor: default;
+      position: static;
+      z-index: 1;
+    }
+
+    .puzzle-message {
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 1.15;
+      color: #7b3f00;
+    }
+
+    .archive-link {
+      width: 610px;
+      margin: 34px auto 0 auto;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin: 70px 0 0 0;
+      font-size: 13px;
+      font-weight: bold;
+      color: #7b3f00;
+    }
+
+    .tiny-note {
+      margin-top: 9px;
+      font-size: 11px;
+      color: #000000;
+      font-weight: normal;
+    }
+
+    .globe-column {
+      position: fixed;
+      top: 18px;
+      width: 88px;
+      text-align: center;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .globe-left {
+      left: 28px;
+    }
+
+    .globe-right {
+      right: 28px;
+    }
+
+    .globe-column img {
+      display: block;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 22px auto;
+      image-rendering: auto;
+    }
+
+    @media only screen and (max-width: 1200px) {
+      .globe-column {
+        width: 54px;
+      }
+
+      .globe-left {
+        left: 4px;
+      }
+
+      .globe-right {
+        right: 4px;
+      }
+
+      .globe-column img {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 18px;
+      }
+    }
+
+    @media only screen and (max-width: 1000px) {
+      .page {
+        width: 94%;
+      }
+
+      .site-title {
+        font-size: 52px;
+      }
+
+      .tagline {
+        font-size: 27px;
+      }
+
+      .intro-text,
+      .archive-link {
+        width: 88%;
+      }
+    }
+
+    @media only screen and (max-width: 760px) {
+      .globe-column {
+        position: absolute;
+        top: 105px;
+        width: 32px;
+      }
+
+      .globe-left {
+        left: 2px;
+      }
+
+      .globe-right {
+        right: 2px;
+      }
+
+      .globe-column img {
+        width: 26px;
+        height: 26px;
+        margin-bottom: 34px;
+      }
+
+      .page {
+        width: 84%;
+      }
+
+      .flag-puzzle {
+        --piece-width: 140px;
+        --piece-height: 100px;
+        width: 300px;
+      }
+
+      .me-puzzle {
+        --piece-width: 120px;
+        --piece-height: 120px;
+        width: 280px;
+      }
+
+      .puzzle-instruction {
+        width: 92%;
+      }
+
+      .puzzle-piece {
+        margin: 4px;
+      }
+    }
+
+    @media only screen and (max-width: 620px) {
+      .site-title {
+        font-size: 42px;
+      }
+
+      .tagline {
+        font-size: 22px;
+      }
+
+      .flags img {
+        width: 40px;
+        margin: 0 10px;
+      }
+
+      .nav {
+        font-size: 18px;
+      }
+
+      .portrait-row {
+        width: 95%;
+        margin-bottom: 28px;
+      }
+
+      .hello-cell {
+        font-size: 13px;
+      }
+
+      .portrait {
+        width: 135px;
+      }
+
+      .intro-text {
+        font-size: 18px;
+        line-height: 1.22;
+      }
+
+      .puzzle-area h2 {
+        font-size: 23px;
+      }
+
+      .archive-link {
+        font-size: 18px;
+      }
+    }
+
+    @media only screen and (max-width: 430px) {
+      .globe-column img {
+        display: none;
+      }
+
+      .globe-column img:first-child,
+      .globe-column img:nth-child(2),
+      .globe-column img:nth-child(3) {
+        display: block;
+      }
+
+      .globe-column {
+        top: 125px;
+      }
+
+      .page {
+        width: 86%;
+      }
+
+      .flag-puzzle {
+        --piece-width: 130px;
+        --piece-height: 92px;
+        width: 280px;
+      }
+
+      .me-puzzle {
+        --piece-width: 110px;
+        --piece-height: 110px;
+        width: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="globe-column globe-left" aria-hidden="true">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+  </div>
+
+  <div class="globe-column globe-right" aria-hidden="true">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+    <img src="images/globe-revolution.gif" alt="">
+  </div>
+
+  <div class="page">
+    <h1 class="site-title">WISDOM MAN JUNIOR</h1>
+    <div class="tagline">&quot;Advisor of Life Matters&quot;</div>
+
+    <div class="flags">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+      <img src="images/wisdom-flag.png" alt="Wisdom flag">
+    </div>
+
+    <div class="nav">
+      - <a href="index.html">HOME</a> -
+      <a href="archive.html">ENTER WISDOM</a> -
+      <a href="services.html">SERVICES</a> -
+      <a href="facts.html">FACTS</a> -
+      <a href="email.html">EMAIL</a> -
+    </div>
+
+    <div class="portrait-row">
+      <div class="portrait-cell">
+        <a href="index.html">
+          <img class="portrait" src="images/wisdom-man-junior.png" alt="Wisdom Man Junior">
+        </a>
+      </div>
+
+      <div class="hello-cell">
+        Security<br>
+        Puzzle<br>
+        For Visitor
+      </div>
+    </div>
+
+    <main>
+      <div class="intro-text">
+        Please complete puzzles to prove you are real visitor and not automatic machine of bad intention. This page is for security and personal improvement.
+      </div>
+
+      <section class="puzzle-area flag-puzzle" data-puzzle="flag">
+        <h2>FLAG PUZZLE</h2>
+
+        <div class="puzzle-instruction">
+          Assemble flag for entering correct verification.
+        </div>
+
+        <div class="puzzle-board">
+          <div class="puzzle-slot" data-slot="1"></div>
+          <div class="puzzle-slot" data-slot="2"></div>
+          <div class="puzzle-slot" data-slot="3"></div>
+          <div class="puzzle-slot" data-slot="4"></div>
+        </div>
+
+        <div class="puzzle-pieces">
+          <img class="puzzle-piece" src="images/flag-puzzle-3.png" data-piece="3" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-1.png" data-piece="1" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-4.png" data-piece="4" alt="">
+          <img class="puzzle-piece" src="images/flag-puzzle-2.png" data-piece="2" alt="">
+        </div>
+
+        <div class="puzzle-message">Flag is not yet solved.</div>
+      </section>
+
+      <section class="puzzle-area me-puzzle" data-puzzle="me">
+        <h2>ME PUZZLE</h2>
+
+        <div class="puzzle-instruction">
+          Put me back together for human confirmation.
+        </div>
+
+        <div class="puzzle-board">
+          <div class="puzzle-slot" data-slot="1"></div>
+          <div class="puzzle-slot" data-slot="2"></div>
+          <div class="puzzle-slot" data-slot="3"></div>
+          <div class="puzzle-slot" data-slot="4"></div>
+        </div>
+
+        <div class="puzzle-pieces">
+          <img class="puzzle-piece" src="images/portrait-puzzle-2.png" data-piece="2" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-4.png" data-piece="4" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-1.png" data-piece="1" alt="">
+          <img class="puzzle-piece" src="images/portrait-puzzle-3.png" data-piece="3" alt="">
+        </div>
+
+        <div class="puzzle-message">Man is not yet complete.</div>
+      </section>
+    </main>
+
+    <div class="archive-link">
+      <a href="index.html">BACK HOME</a>
+    </div>
+
+    <div class="footer">
+      2004&copy;WISDOMMANJUNIOR
+      <div class="tiny-note">Best viewed with Internet Explorer 6.0 or emotionally similar browser.</div>
+    </div>
+  </div>
+
+  <script>
+    var activePiece = null;
+    var startParent = null;
+    var startNextSibling = null;
+    var offsetX = 0;
+    var offsetY = 0;
+    var originalLeft = 0;
+    var originalTop = 0;
+
+    function initPuzzles() {
+      var pieces = document.querySelectorAll(".puzzle-piece");
+
+      for (var i = 0; i < pieces.length; i++) {
+        pieces[i].addEventListener("pointerdown", startDrag);
+      }
+    }
+
+    function startDrag(event) {
+      var piece = event.currentTarget;
+
+      if (piece.classList.contains("placed")) {
+        return;
+      }
+
+      event.preventDefault();
+
+      activePiece = piece;
+      startParent = piece.parentNode;
+      startNextSibling = piece.nextSibling;
+
+      var rect = piece.getBoundingClientRect();
+
+      offsetX = event.clientX - rect.left;
+      offsetY = event.clientY - rect.top;
+
+      originalLeft = rect.left;
+      originalTop = rect.top;
+
+      piece.classList.add("dragging");
+      piece.style.left = rect.left + "px";
+      piece.style.top = rect.top + "px";
+      piece.style.width = rect.width + "px";
+      piece.style.height = rect.height + "px";
+
+      document.body.appendChild(piece);
+
+      try {
+        piece.setPointerCapture(event.pointerId);
+      } catch (e) {}
+
+      document.addEventListener("pointermove", moveDrag);
+      document.addEventListener("pointerup", endDrag);
+    }
+
+    function moveDrag(event) {
+      if (!activePiece) {
+        return;
+      }
+
+      activePiece.style.left = (event.clientX - offsetX) + "px";
+      activePiece.style.top = (event.clientY - offsetY) + "px";
+    }
+
+    function endDrag(event) {
+      if (!activePiece) {
+        return;
+      }
+
+      var piece = activePiece;
+      var puzzle = piece.closest(".puzzle-area");
+
+      var piecePuzzleType = null;
+      if (puzzle) {
+        piecePuzzleType = puzzle.getAttribute("data-puzzle");
+      }
+
+      var clientX = event.clientX;
+      var clientY = event.clientY;
+      var targetSlot = findSlotUnderPoint(clientX, clientY, piecePuzzleType);
+
+      if (targetSlot && targetSlot.getAttribute("data-slot") === piece.getAttribute("data-piece") && targetSlot.children.length === 0) {
+        placePieceInSlot(piece, targetSlot);
+        checkPuzzleComplete(targetSlot.closest(".puzzle-area"));
+      } else {
+        returnPiece(piece);
+      }
+
+      activePiece = null;
+      document.removeEventListener("pointermove", moveDrag);
+      document.removeEventListener("pointerup", endDrag);
+    }
+
+    function findSlotUnderPoint(x, y, puzzleType) {
+      var slots = document.querySelectorAll('.puzzle-area[data-puzzle="' + puzzleType + '"] .puzzle-slot');
+
+      for (var i = 0; i < slots.length; i++) {
+        var rect = slots[i].getBoundingClientRect();
+
+        if (
+          x >= rect.left &&
+          x <= rect.right &&
+          y >= rect.top &&
+          y <= rect.bottom
+        ) {
+          return slots[i];
+        }
+      }
+
+      return null;
+    }
+
+    function placePieceInSlot(piece, slot) {
+      piece.classList.remove("dragging");
+      piece.classList.add("placed");
+
+      piece.style.left = "";
+      piece.style.top = "";
+      piece.style.width = "";
+      piece.style.height = "";
+
+      slot.appendChild(piece);
+      slot.classList.add("correct");
+    }
+
+    function returnPiece(piece) {
+      piece.classList.remove("dragging");
+
+      piece.style.left = "";
+      piece.style.top = "";
+      piece.style.width = "";
+      piece.style.height = "";
+
+      if (startNextSibling) {
+        startParent.insertBefore(piece, startNextSibling);
+      } else {
+        startParent.appendChild(piece);
+      }
+    }
+
+    function checkPuzzleComplete(puzzleArea) {
+      if (!puzzleArea) {
+        return;
+      }
+
+      var slots = puzzleArea.querySelectorAll(".puzzle-slot");
+      var complete = true;
+
+      for (var i = 0; i < slots.length; i++) {
+        if (slots[i].children.length === 0) {
+          complete = false;
+        }
+      }
+
+      if (complete) {
+        var message = puzzleArea.querySelector(".puzzle-message");
+
+        if (puzzleArea.getAttribute("data-puzzle") === "flag") {
+          message.innerHTML = "FLAG PUZZLE COMPLETE. Visitor has national ability.";
+        } else {
+          message.innerHTML = "ME PUZZLE COMPLETE. Wisdom Man Junior has returned.";
+        }
+      }
+    }
+
+    window.addEventListener("load", initPuzzles);
+  </script>
+</body>
+</html>
